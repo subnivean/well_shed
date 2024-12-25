@@ -3,12 +3,13 @@
 
 jupyter
 pyqt5
+pandas
 
 # This is required to get directory history in IPython
 pickleshare
 
 # If installing Mayavi:
-numpy
+#numpy
 # Mayavi can be fussy about the VTK version
 #vtk
 #vtk==9.2.6
