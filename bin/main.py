@@ -30,19 +30,21 @@ def get_sensor_data(sensor_id, start_time, end_time):
 
 
 # Sensors and date range
-sensors = [
-    "sensor.aqara_bh2_on_wall_temperature_2",
-    "sensor.aqara_bh1_outside_temperature",
-    "sensor.sp26_energy_power",
-]
+sensors = {
+    "ti": "sensor.aqara_bh2_on_wall_temperature_2",
+    "to": "sensor.aqara_bh1_outside_temperature",
+    "w": "sensor.sp26_energy_power",
+}
 start_date = datetime.datetime(2024, 12, 25, 1, 13)  # Replace with your start date
 end_date = datetime.datetime(2024, 12, 25, 13, 30)  # Replace with your end date
 
 # Fetch and process data
 for sensor in sensors:
-    data = get_sensor_data(sensor, start_date.isoformat(), end_date.isoformat())
+    data = get_sensor_data(
+        sensors[sensor], start_date.isoformat(), end_date.isoformat()
+    )
     if data:
-        print(f"Data for {sensor}:")
+        print(f"Data for {sensors[sensor]}:")
         for entry in data:
             print(entry)
             for rec in entry:
