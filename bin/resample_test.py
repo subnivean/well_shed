@@ -82,7 +82,7 @@ sensors = [
     # "sensor.sp26_energy_power",
 ]
 start_date = datetime.datetime(2024, 12, 26, 1, 20)  # Replace with your start date
-end_date = datetime.datetime(2024, 12, 26, 9, 30)  # Replace with your end date
+end_date = datetime.datetime(2024, 12, 26, 11, 30)  # Replace with your end date
 
 # Fetch and process data for each sensor
 for sensor in sensors:
@@ -110,7 +110,20 @@ if "switch." in sensor:
     # Drop the first row where duration is NaN
     df = df.dropna(subset=["duration"])
 
+    if df.iloc[-1]["state"] == 0.0:
+        df = df.iloc[:-1]  # Drop the last row
+
+    start_date, end_date = df.index[0], df.index[-1]
+
     # Group by the previous state and sum the durations
     state_durations = df.groupby("previous_state")["duration"].sum()
 
     print(state_durations)
+    print()
+    print(
+        f"Equivalent steady-state power: {int(state_durations[1] / (state_durations.sum()) * 675):d} watts"
+    )
+
+    meantemp = resampled_df.loc[start_date:end_date].mean()
+
+    print(f"Mean temperature: {float(meantemp.iloc[0]):4.1f}")
